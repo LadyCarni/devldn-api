@@ -1,4 +1,5 @@
 require('dotenv-safe').config();
+var FormData = require('form-data');
 
 const express = require('express');
 const cors = require('cors');
@@ -11,7 +12,9 @@ const port = process.env.PORT;
 app.use(bodyParser.json());
 app.use(cors());
 
+console.log('registering post')
 app.post('/invite', (req, res) => {
+    console.log('enter the butthole')
     let email = req.body.email;
     if (!email || !validator.validate(email)) {
         res.status(400).send('Please enter a valid email address.');
@@ -19,12 +22,16 @@ app.post('/invite', (req, res) => {
         return;
     }
 
-    const body = {email, set_active: true, _attempts: 1, token: process.env.TOKEN };
-
+    let formData = new FormData();
+    formData.append('token', process.env.TOKEN);
+    formData.append('email', email);
+    // const body = {token: process.env.TOKEN, email, set_active: true };
     fetch('https://devldn.slack.com/api/users.admin.invite', { 
-        method: 'post',
-        body:    JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        body: formData,
+        // headers: { 
+        //     "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        // },
     })
     .then(res => res.json())
     .then(json => {
@@ -33,6 +40,8 @@ app.post('/invite', (req, res) => {
             return;
         }
         res.send('')
+    }).catch(err => {
+        res.send(err);
     });
 });
 
