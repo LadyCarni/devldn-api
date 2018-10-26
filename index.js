@@ -16,8 +16,7 @@ app.post('/invite', (req, res) => {
 
     let email = req.body.email;
     if (!email || !validator.validate(email)) {
-        res.status(400).send('Please enter a valid email address.');
-
+        res.status(400).send(JSON.stringify('Please enter a valid email address.'));
         return;
     }
 
@@ -28,12 +27,11 @@ app.post('/invite', (req, res) => {
     fetch('https://devldn.slack.com/api/users.admin.invite', { 
         method: 'POST',
         body: formData,
-
     })
     .then(res => res.json())
     .then(json => {
         if (!json.ok) {
-            res.status(400).send(json)
+            res.status(401).send(json)
             return;
         }
         res.send('')
