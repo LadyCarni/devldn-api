@@ -6,7 +6,7 @@
 
 `docker build -t slackapp .`
 
-`docker run -d --name ts -e TOKEN=123 -e PORT=3001 -p 3001:3001 slackapp`
+`docker run -d --name ts -e TOKEN=123 -e PORT=3002 p 3002:3002 slackapp`
 
 ## Run locally
 
