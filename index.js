@@ -16,7 +16,7 @@ app.post('/invite', (req, res) => {
 
     let email = req.body.email;
     if (!email || !validator.validate(email)) {
-        res.status(400).send(JSON.stringify('Please enter a valid email address.'));
+        res.status(400).json({error: 'Please enter a valid email address.'});
         return;
     }
 
@@ -34,7 +34,7 @@ app.post('/invite', (req, res) => {
             res.status(401).send(json)
             return;
         }
-        res.send('')
+        res.json({ok: true})
     })
 });
 
